@@ -1,6 +1,6 @@
 package com.stockflow.StockFlowApi.usuario.enums;
 
-public enum Role {
+public enum Cargo {
     ADMINISTRADOR,
     GERENTE,
     SUPERVISOR,

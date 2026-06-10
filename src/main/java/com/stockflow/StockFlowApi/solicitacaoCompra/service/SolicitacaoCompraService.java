@@ -4,7 +4,7 @@ import com.stockflow.StockFlowApi.shared.enums.StatusSolicitacao;
 import com.stockflow.StockFlowApi.solicitacaoCompra.dto.SolicitacaoCompraRequestDTO;
 import com.stockflow.StockFlowApi.solicitacaoCompra.entity.SolicitacaoCompra;
 import com.stockflow.StockFlowApi.solicitacaoCompra.repository.SolicitacaoCompraRepository;
-import com.stockflow.StockFlowApi.usuario.entity.User;
+import com.stockflow.StockFlowApi.usuario.entity.Usuario;
 import com.stockflow.StockFlowApi.usuario.repository.UsuarioRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -29,13 +29,13 @@ public class SolicitacaoCompraService {
 
         System.out.println("Chegou no service");
 
-        User user = usuarioRepository
+        Usuario usuario = usuarioRepository
                 .findById(dto.usuario_id())
                 .orElseThrow();
 
         SolicitacaoCompra solicitacaoCompra = new SolicitacaoCompra();
 
-        solicitacaoCompra.setUser(user);
+        solicitacaoCompra.setUsuario(usuario);
         solicitacaoCompra.setData(LocalDateTime.now());
         solicitacaoCompra.setStatusSolicitacao(StatusSolicitacao.ABERTA);
         solicitacaoCompra.setObservacao(dto.obs());
