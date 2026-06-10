@@ -3,9 +3,9 @@ spring:
     name: StockFlowApi
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/stockflowteste
-    username: postgres
-    password: 123456
+    url: jdbc:postgresql://ep-bold-cherry-acx0x5qy-pooler.sa-east-1.aws.neon.tech/StockFlowTESTDB?sslmode=require&channelBinding=require
+    username: neondb_owner
+    password: npg_u7cwxOkPUFY3
 
   jpa:
     show-sql: true

@@ -28,5 +28,4 @@ public class SolicitacaoCompra {
 
     private String observacao;
     private LocalDateTime data;
-
 }
