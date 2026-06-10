@@ -22,7 +22,7 @@ public class SecurityConfiguration {
 
         return http
 //                CSRF, desative apenas em ambiente de testes, geralmente resolve problema de endpoint bloqueados
-//                .csrf(AbstractHttpConfigurer::disable)
+                .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()

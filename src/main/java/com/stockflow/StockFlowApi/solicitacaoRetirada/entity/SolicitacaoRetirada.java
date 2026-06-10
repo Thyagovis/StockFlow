@@ -1,7 +1,7 @@
 package com.stockflow.StockFlowApi.solicitacaoRetirada.entity;
 
 import com.stockflow.StockFlowApi.shared.enums.StatusSolicitacao;
-import com.stockflow.StockFlowApi.user.entity.User;
+import com.stockflow.StockFlowApi.usuario.entity.Usuario;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,7 +24,7 @@ public class SolicitacaoRetirada {
 
     @ManyToOne
     @JoinColumn(name = "usuario_id")
-    private User usuario;
+    private Usuario usuario;
 
     private LocalDateTime data;
     private String justificativa;

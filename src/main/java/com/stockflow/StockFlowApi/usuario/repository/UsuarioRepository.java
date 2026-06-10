@@ -1,6 +1,6 @@
-package com.stockflow.StockFlowApi.user.repositories;
+package com.stockflow.StockFlowApi.usuario.repository;
 
-import com.stockflow.StockFlowApi.user.entity.User;
+import com.stockflow.StockFlowApi.usuario.entity.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Repository;
@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
     Optional<UserDetails> findByLogin(String login);
 

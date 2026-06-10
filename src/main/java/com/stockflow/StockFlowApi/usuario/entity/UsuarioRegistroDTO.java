@@ -1,14 +1,14 @@
-package com.stockflow.StockFlowApi.user.entity;
+package com.stockflow.StockFlowApi.usuario.entity;
 
-import com.stockflow.StockFlowApi.user.enums.Role;
+import com.stockflow.StockFlowApi.usuario.enums.Cargo;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-public record UserRegisterDTO(
+public record UsuarioRegistroDTO(
 
         @NotBlank
-        String name,
+        String nome,
 
         @Email @NotBlank
         String email,
@@ -17,10 +17,10 @@ public record UserRegisterDTO(
         String login,
 
         @NotBlank
-        String password,
+        String senha,
 
         @NotNull
-        Role role
+        Cargo cargo
 
 ) {
 }

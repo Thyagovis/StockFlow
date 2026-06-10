@@ -1,10 +1,7 @@
 package com.stockflow.StockFlowApi.security.controller;
 
-import com.stockflow.StockFlowApi.user.entity.User;
-import com.stockflow.StockFlowApi.user.entity.UserMapper;
-import com.stockflow.StockFlowApi.user.entity.UserRegisterDTO;
-import com.stockflow.StockFlowApi.user.entity.UserResponseDTO;
-import com.stockflow.StockFlowApi.user.repositories.UserRepository;
+import com.stockflow.StockFlowApi.usuario.entity.*;
+import com.stockflow.StockFlowApi.usuario.repository.UsuarioRepository;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -21,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     private final PasswordEncoder passwordEncoder;
-    private final UserRepository userRepository;
+    private final UsuarioRepository usuarioRepository;
 
     @PostMapping("/login")
     public ResponseEntity<?> login() {
@@ -29,20 +26,20 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<UserResponseDTO> register(@RequestBody @Valid UserRegisterDTO registerDTO) {
+    public ResponseEntity<UsuarioResponseDTO> registrar(@RequestBody @Valid UsuarioRegistroDTO registerDTO) {
 
-        var hashPass = passwordEncoder.encode(registerDTO.password());
+        var senhaCodificada = passwordEncoder.encode(registerDTO.senha());
 
-        User user = new User(
-                registerDTO.name(),
+        Usuario usuario = new Usuario(
+                registerDTO.nome(),
                 registerDTO.email(),
                 registerDTO.login(),
-                hashPass,
-                registerDTO.role()
+                senhaCodificada,
+                registerDTO.cargo()
         );
 
-        userRepository.save(user);
+        usuarioRepository.save(usuario);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(UserMapper.toUserResponseDTO(user));
+        return ResponseEntity.status(HttpStatus.CREATED).body(UsuarioMapper.paraResponseDTO(usuario));
     }
 }
