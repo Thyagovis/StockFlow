@@ -1,13 +1,22 @@
 spring:
+  config:
+    import: file:.env[.properties]
+
   application:
     name: StockFlowApi
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/stockflowteste
-    username: postgres
-    password: 123456
+    url: ${DB_URL}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
 
   jpa:
     show-sql: true
     hibernate:
       ddl-auto: update
+
+security:
+  jwt:
+    secret: ${JWT_SECRET}
+    expiration: 86400
+    issuer: StockFlowApi

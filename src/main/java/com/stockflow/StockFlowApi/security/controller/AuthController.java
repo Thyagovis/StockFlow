@@ -41,9 +41,9 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
-        String token = jwtService.gerarToken(usuario);
+        var token = jwtService.gerarToken(usuario);
 
-        return ResponseEntity.status(HttpStatus.OK).body(new TokenResponseDTO(token));
+        return ResponseEntity.status(HttpStatus.OK).body(token);
     }
 
     @PostMapping("/registro")

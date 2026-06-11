@@ -2,7 +2,8 @@ package com.stockflow.StockFlowApi.security.dto;
 
 public record TokenResponseDTO(
 
-        String token
+        String token,
+        Long expireIn
 
 ) {
 }
