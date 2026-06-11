@@ -1,4 +1,4 @@
-package com.stockflow.StockFlowApi.usuario.entity;
+package com.stockflow.StockFlowApi.usuario.dto;
 
 
 import com.stockflow.StockFlowApi.usuario.enums.Cargo;
