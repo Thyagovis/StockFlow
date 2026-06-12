@@ -18,7 +18,7 @@ public class UsuarioController {
 
     @GetMapping
     public ResponseEntity<List<UsuarioResponseDTO>> getAll(
-            @RequestParam(required = false) Boolean ativo
+            @RequestParam(name = "ativo", required = false) Boolean ativo
     ) {
         var usuarios = usuarioService.listAll(ativo);
         return ResponseEntity.status(HttpStatus.OK).body(usuarios);
