@@ -1,7 +1,6 @@
-package com.stockflow.StockFlowApi.solicitacaoRetirada.dto;
+package com.stockflow.StockFlowApi.solicitacaoRetirada.dto.item;
 
 import com.stockflow.StockFlowApi.produto.dto.ProdutoResponseDTO;
-import com.stockflow.StockFlowApi.produto.entity.Produto;
 
 import java.math.BigDecimal;
 
