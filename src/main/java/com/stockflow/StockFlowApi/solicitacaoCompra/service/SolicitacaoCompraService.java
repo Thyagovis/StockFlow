@@ -5,6 +5,7 @@ import com.stockflow.StockFlowApi.produto.repository.ProdutoRepository;
 import com.stockflow.StockFlowApi.produto.service.ProdutoService;
 import com.stockflow.StockFlowApi.shared.enums.StatusSolicitacao;
 import com.stockflow.StockFlowApi.solicitacaoCompra.dto.item.ItemSolicitacaoCompraRequestDTO;
+import com.stockflow.StockFlowApi.solicitacaoCompra.dto.item.ItemSolicitacaoCompraResponseDTO;
 import com.stockflow.StockFlowApi.solicitacaoCompra.dto.solicitacao.SolicitacaoCompraRequestDTO;
 import com.stockflow.StockFlowApi.solicitacaoCompra.dto.solicitacao.SolicitacaoCompraResponseDTO;
 import com.stockflow.StockFlowApi.solicitacaoCompra.entity.ItemSolicitacaoCompra;
@@ -44,6 +45,16 @@ public class SolicitacaoCompraService {
                 solicitacaoCompra.getStatusSolicitacao(),
                 solicitacaoCompra.getObservacao(),
                 solicitacaoCompra.getData()
+        );
+    }
+
+
+
+    private ItemSolicitacaoCompraResponseDTO definirItemDTO(ItemSolicitacaoCompra itemSolicitacaoCompra){
+        return new ItemSolicitacaoCompraResponseDTO(
+                itemSolicitacaoCompra.getId(),
+                itemSolicitacaoCompra.getProduto().getName(),
+                itemSolicitacaoCompra.getQuantidadeSolicitada()
         );
     }
 
@@ -107,6 +118,51 @@ public class SolicitacaoCompraService {
         solicitacaoCompraRepository.delete(solicitacaoCompra);
 
         return "Solicitação removida com sucesso";
+    }
+
+
+
+    public ItemSolicitacaoCompraResponseDTO putItem(Long idItem, ItemSolicitacaoCompraRequestDTO dto){
+
+        ItemSolicitacaoCompra itemSolicitacaoCompra = itemSolicitacaoCompraRepository
+                .findById(idItem)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Item não encontrado"
+                ));
+
+        SolicitacaoCompraResponseDTO compraResponseDTO = findById(
+                itemSolicitacaoCompra
+                .getSolicitacaoCompra()
+                .getId());
+
+        if(compraResponseDTO.statusSolicitacao() != StatusSolicitacao.ABERTA){
+            throw new IllegalStateException(
+                    "A solicitação só pode ser alterada enquanto estiver em ABERTO"
+            );
+        }
+
+        if(dto.observacao() != null){
+            itemSolicitacaoCompra.setObservacao(dto.observacao());
+        }
+
+        if(dto.produto_id() != null){
+            Produto produto = produtoRepository
+                    .findById(dto.produto_id())
+                            .orElseThrow(() -> new ResponseStatusException(
+                                    HttpStatus.NOT_FOUND,
+                                    "Produto não encontrado"
+                            ));
+
+            itemSolicitacaoCompra.setProduto(produto);
+        }
+
+        if(dto.quantidadeSolicitada() != null){
+            itemSolicitacaoCompra.setQuantidadeSolicitada(dto.quantidadeSolicitada());
+        }
+
+        return definirItemDTO(itemSolicitacaoCompraRepository.save(itemSolicitacaoCompra));
+
     }
 
 

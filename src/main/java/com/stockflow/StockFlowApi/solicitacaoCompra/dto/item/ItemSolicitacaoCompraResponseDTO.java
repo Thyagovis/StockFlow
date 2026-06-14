@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 
 public record ItemSolicitacaoCompraResponseDTO(
         Long id,
+        String produtoName,
         BigDecimal quantidadeSolicitada
 ) {
 }
