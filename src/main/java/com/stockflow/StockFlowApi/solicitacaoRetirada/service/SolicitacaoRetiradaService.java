@@ -10,6 +10,7 @@ import com.stockflow.StockFlowApi.solicitacaoRetirada.dto.solicitacao.Solicitaca
 import com.stockflow.StockFlowApi.solicitacaoRetirada.dto.solicitacao.SolicitacaoRetiradaSimplificadaResponseDTO;
 import com.stockflow.StockFlowApi.solicitacaoRetirada.entity.SolicitacaoItemRetirada;
 import com.stockflow.StockFlowApi.solicitacaoRetirada.entity.SolicitacaoRetirada;
+import com.stockflow.StockFlowApi.solicitacaoRetirada.mapper.SolicitacaoRetiradaMapper;
 import com.stockflow.StockFlowApi.solicitacaoRetirada.repository.SolicitacaoItemRetiradaRepository;
 import com.stockflow.StockFlowApi.solicitacaoRetirada.repository.SolicitacaoRetiradaRepository;
 import com.stockflow.StockFlowApi.usuario.entity.Usuario;
@@ -24,6 +25,9 @@ import org.springframework.web.server.ResponseStatusException;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static com.stockflow.StockFlowApi.solicitacaoRetirada.mapper.SolicitacaoRetiradaMapper.toDetalhadaRetiradaDTO;
+import static com.stockflow.StockFlowApi.solicitacaoRetirada.mapper.SolicitacaoRetiradaMapper.toSimplesRetiradaDTO;
+
 @Service
 @AllArgsConstructor
 @Data
@@ -34,34 +38,6 @@ public class SolicitacaoRetiradaService {
     private final SolicitacaoItemRetiradaRepository solicitacaoItemRetiradaRepository;
     private final UsuarioRepository usuarioRepository;
     private final ProdutoRepository produtoRepository;
-
-
-
-    private SolicitacaoRetiradaDetalhadaResponseDTO definirDTO(SolicitacaoRetirada solicitacaoRetirada){
-
-        List<SolicitacaoItemRetirada> itensRetirada = solicitacaoItemRetiradaRepository
-                .findBySolicitacaoRetiradaId(solicitacaoRetirada.getId());
-
-        return new SolicitacaoRetiradaDetalhadaResponseDTO(
-                solicitacaoRetirada.getId(),
-                solicitacaoRetirada.getStatusSolicitacao(),
-                solicitacaoRetirada.getJustificativa(),
-                solicitacaoRetirada.getData(),
-                itensRetirada
-        );
-    }
-
-
-
-    private SolicitacaoRetiradaSimplificadaResponseDTO definirSimplesDTO(SolicitacaoRetirada solicitacaoRetirada){
-        return new SolicitacaoRetiradaSimplificadaResponseDTO(
-                solicitacaoRetirada.getId(),
-                solicitacaoRetirada.getStatusSolicitacao(),
-                solicitacaoRetirada.getJustificativa(),
-                solicitacaoRetirada.getData(),
-                solicitacaoRetirada.getUsuario().getNome()
-        );
-    }
 
 
 
@@ -121,7 +97,7 @@ public class SolicitacaoRetiradaService {
             solicitacaoItemRetiradaRepository.save(solicitacaoItemRetirada);
         }
 
-        return definirSimplesDTO(solicitacaoRetirada);
+        return toSimplesRetiradaDTO(solicitacaoRetirada);
     }
 
 
@@ -181,9 +157,10 @@ public class SolicitacaoRetiradaService {
 
     public SolicitacaoRetiradaDetalhadaResponseDTO findById(Long id){
 
-        SolicitacaoRetirada solicitacaoRetirada = findEntityByid(id);
-
-        return definirDTO(solicitacaoRetirada);
+        return toDetalhadaRetiradaDTO(
+                findEntityByid(id),
+                solicitacaoItemRetiradaRepository.findBySolicitacaoRetiradaId(id)
+                );
     }
 
 
@@ -192,7 +169,7 @@ public class SolicitacaoRetiradaService {
         return solicitacaoRetiradaRepository
                 .findAll()
                 .stream()
-                .map(this::definirSimplesDTO)
+                .map(SolicitacaoRetiradaMapper::toSimplesRetiradaDTO)
                 .toList();
     }
 
@@ -211,7 +188,7 @@ public class SolicitacaoRetiradaService {
         solicitacaoRetirada.setStatusSolicitacao(StatusSolicitacao.APROVADA);
         solicitacaoRetiradaRepository.save(solicitacaoRetirada);
 
-        return definirSimplesDTO(solicitacaoRetirada);
+        return toSimplesRetiradaDTO(solicitacaoRetirada);
     }
 
 
@@ -229,6 +206,6 @@ public class SolicitacaoRetiradaService {
         solicitacaoRetirada.setStatusSolicitacao(StatusSolicitacao.APROVADA);
         solicitacaoRetiradaRepository.save(solicitacaoRetirada);
 
-        return definirSimplesDTO(solicitacaoRetirada);
+        return toSimplesRetiradaDTO(solicitacaoRetirada);
     }
 }
