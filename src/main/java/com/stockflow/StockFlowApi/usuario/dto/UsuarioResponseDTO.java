@@ -12,6 +12,7 @@ public record UsuarioResponseDTO(
         String login,
         Cargo cargo,
         LocalDateTime dataCriacao,
+        LocalDateTime dataAtualizacao,
         Boolean ativo
 ) {
 }

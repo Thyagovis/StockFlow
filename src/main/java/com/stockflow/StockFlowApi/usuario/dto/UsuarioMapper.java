@@ -16,7 +16,21 @@ public class UsuarioMapper {
                 usuario.getLogin(),
                 usuario.getCargo(),
                 usuario.getDataCriacao(),
+                usuario.getDataAtualizacao(),
                 usuario.isAtivo()
+        );
+    }
+
+    public static UsuarioSummaryDTO paraUsuarioSummaryDTO(Usuario usuario) {
+        if (usuario == null) {
+            return null;
+        }
+
+        return new UsuarioSummaryDTO(
+                usuario.getId(),
+                usuario.getNome(),
+                usuario.getEmail(),
+                usuario.getCargo()
         );
     }
 
