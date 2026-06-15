@@ -1,7 +1,9 @@
 package com.stockflow.StockFlowApi.usuario.controller;
 
+import com.stockflow.StockFlowApi.usuario.dto.UsuarioPatchDTO;
 import com.stockflow.StockFlowApi.usuario.dto.UsuarioResponseDTO;
 import com.stockflow.StockFlowApi.usuario.service.UsuarioService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,9 +26,21 @@ public class UsuarioController {
         return ResponseEntity.status(HttpStatus.OK).body(usuarios);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<UsuarioResponseDTO> getById(@PathVariable Long id) {
+        var usuario = usuarioService.findById(id);
+        return ResponseEntity.status(HttpStatus.OK).body(usuario);
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         usuarioService.deleteById(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<UsuarioResponseDTO> patchById(@PathVariable Long id, @RequestBody @Valid UsuarioPatchDTO patchDTO) {
+        var usuario = usuarioService.patchUsuario(id, patchDTO);
+        return ResponseEntity.status(HttpStatus.OK).body(usuario);
     }
 }

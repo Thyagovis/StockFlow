@@ -3,9 +3,8 @@ package com.stockflow.StockFlowApi.security.controller;
 import com.stockflow.StockFlowApi.security.dto.TokenResponseDTO;
 import com.stockflow.StockFlowApi.security.service.JwtService;
 import com.stockflow.StockFlowApi.usuario.dto.UsuarioLoginDTO;
-import com.stockflow.StockFlowApi.usuario.dto.UsuarioRegistroDTO;
+import com.stockflow.StockFlowApi.usuario.dto.UsuarioRegisterDTO;
 import com.stockflow.StockFlowApi.usuario.dto.UsuarioResponseDTO;
-import com.stockflow.StockFlowApi.usuario.entity.*;
 import com.stockflow.StockFlowApi.usuario.service.UsuarioService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -44,7 +43,7 @@ public class AuthController {
     }
 
     @PostMapping("/registro")
-    public ResponseEntity<UsuarioResponseDTO> registrar(@RequestBody @Valid UsuarioRegistroDTO registerDTO) {
+    public ResponseEntity<UsuarioResponseDTO> registrar(@RequestBody @Valid UsuarioRegisterDTO registerDTO) {
         var response = usuarioService.saveUsuario(registerDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
