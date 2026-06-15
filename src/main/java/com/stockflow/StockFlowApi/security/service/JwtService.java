@@ -3,9 +3,11 @@ package com.stockflow.StockFlowApi.security.service;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.stockflow.StockFlowApi.security.dto.TokenResponseDTO;
-import com.stockflow.StockFlowApi.usuario.entity.Usuario;
+import com.stockflow.StockFlowApi.shared.exceptions.InvalidTokenException;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -22,10 +24,10 @@ public class JwtService {
     @Value("${security.jwt.issuer}")
     private String ISSUER;
 
-    public TokenResponseDTO gerarToken(Usuario usuario) {
+    public TokenResponseDTO gerarToken(UserDetails usuario) {
         var token = JWT.create()
                 .withIssuer(ISSUER)
-                .withSubject(usuario.getLogin())
+                .withSubject(usuario.getUsername())
                 .withIssuedAt(Instant.now())
                 .withExpiresAt(Instant.now().plusSeconds(EXPIRATION))
                 .sign(Algorithm.HMAC256(SECRET));
@@ -34,17 +36,22 @@ public class JwtService {
     }
 
     public String validarToken(String token) {
-        var tokenDec = JWT.require(Algorithm.HMAC256(SECRET))
-                .build()
-                .verify(token);
 
-        if (!tokenDec.getIssuer().equals(ISSUER)
-            || tokenDec.getExpiresAt() == null
-        ) {
-            throw new JWTVerificationException("Token invalido");
+        try {
+            return JWT.require(Algorithm.HMAC256(SECRET))
+                    .withIssuer(ISSUER)
+                    .build()
+                    .verify(token)
+                    .getSubject();
+
+        }
+        catch (TokenExpiredException e) {
+            throw new InvalidTokenException("Token expirado", e);
+        }
+        catch (JWTVerificationException e) {
+            throw new InvalidTokenException("Token invalido", e);
         }
 
-        return tokenDec.getSubject();
     }
 
 }
