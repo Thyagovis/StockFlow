@@ -2,6 +2,8 @@ package com.stockflow.StockFlowApi.estoque.entity;
 
 import com.stockflow.StockFlowApi.produto.entity.Produto;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
@@ -18,12 +20,13 @@ import java.time.LocalDateTime;
 public class Estoque {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @OneToOne
-    @JoinColumn(name = "id")
-
+    @JoinColumn(name = "produto_id")
     private Produto produto;
+
     private Long quantidadeAtual;
     private Long quantidadeReservada;
     private Long estoqueMinimo;
