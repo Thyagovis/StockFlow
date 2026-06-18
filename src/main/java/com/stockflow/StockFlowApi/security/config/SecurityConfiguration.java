@@ -33,14 +33,13 @@ public class SecurityConfiguration {
 
         return http
 //                CSRF, desative apenas em ambiente de testes, geralmente resolve problema de endpoint bloqueados
-//                .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/auth/registro").hasAllRoles("ADMINISTRADOR")
+                        .requestMatchers(HttpMethod.POST, "/auth/registro").permitAll()
                         .requestMatchers("/usuarios").hasAllRoles("ADMINISTRADOR")
-                        .anyRequest().permitAll()
+                        .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtSecurityFilter, UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling(exHandler -> exHandler
