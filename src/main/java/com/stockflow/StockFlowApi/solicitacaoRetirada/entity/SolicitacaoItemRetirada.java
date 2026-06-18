@@ -20,11 +20,13 @@ public class SolicitacaoItemRetirada {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "solicitacao_retirada_id")
+    @JoinColumn(name = "solicitacao_retirada_id", nullable = false)
     private SolicitacaoRetirada solicitacaoRetirada;
 
     @ManyToOne
-    @JoinColumn(name = "produto_id")
+    @JoinColumn(name = "produto_id", nullable = false)
     private Produto produto;
+
+    @Column(nullable = false)
     private BigDecimal quantidade;
 }
