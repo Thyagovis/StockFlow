@@ -2,7 +2,9 @@ package com.stockflow.StockFlowApi.produto.service;
 
 import com.stockflow.StockFlowApi.categoria.entity.Categoria;
 import com.stockflow.StockFlowApi.categoria.repository.CategoriaRepository;
-import com.stockflow.StockFlowApi.produto.dto.ProdutoRequestDTO;
+import com.stockflow.StockFlowApi.produto.dto.ProdutoCreateDTO;
+import com.stockflow.StockFlowApi.produto.dto.ProdutoMapper;
+import com.stockflow.StockFlowApi.produto.dto.ProdutoPatchDTO;
 import com.stockflow.StockFlowApi.produto.dto.ProdutoResponseDTO;
 import com.stockflow.StockFlowApi.produto.entity.Produto;
 import com.stockflow.StockFlowApi.produto.repository.ProdutoRepository;
@@ -23,7 +25,7 @@ public class ProdutoService {
     public List<ProdutoResponseDTO> listarTodos() {
         return produtoRepository.findAll()
                 .stream()
-                .map(this::toResponseDTO)
+                .map(ProdutoMapper::toResponseDTO)
                 .toList();
     }
 
@@ -32,45 +34,57 @@ public class ProdutoService {
         var produto = produtoRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Produto não encontrado"));
 
-        return toResponseDTO(produto);
+        return ProdutoMapper.toResponseDTO(produto);
     }
 
 
     @Transactional
-    public ProdutoResponseDTO criar(ProdutoRequestDTO dto) {
-
-        validar(dto);
+    public ProdutoResponseDTO criar(ProdutoCreateDTO dto) {
 
         Categoria categoria = categoriaRepository.findById(dto.categoriaId())
                 .orElseThrow(() -> new NotFoundException("Categoria não encontrada"));
 
         var produto = new Produto(
+                dto.codigo(),
                 dto.nome(),
                 dto.descricao(),
                 categoria
         );
 
-        return toResponseDTO(produtoRepository.save(produto));
+        return ProdutoMapper.toResponseDTO(produtoRepository.save(produto));
     }
 
 
     @Transactional
-    public ProdutoResponseDTO atualizar(Long id, ProdutoRequestDTO dto) {
-
-        validar(dto);
+    public ProdutoResponseDTO atualizar(Long id, ProdutoPatchDTO dto) {
 
         var produto = produtoRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Produto não encontrado"));
 
-        var categoria = categoriaRepository.findById(dto.categoriaId())
-                .orElseThrow(() -> new RuntimeException("Categoria não encontrada"));
+        if (dto.codigo() != null) {
+            produto.setCodigo(dto.codigo());
+        }
 
-        produto.setNome(dto.nome());
-        produto.setDescricao(dto.descricao());
-        produto.setAtivo(dto.ativo());
-        produto.setCategoria(categoria);
+        if (dto.nome() != null) {
+            produto.setNome(dto.nome());
+        }
 
-        return toResponseDTO(produtoRepository.save(produto));
+        if (dto.descricao() != null) {
+            produto.setDescricao(dto.descricao());
+        }
+
+        if (dto.categoriaId() != null) {
+            var categoria = categoriaRepository.findById(dto.categoriaId())
+                    .orElseThrow(() -> new RuntimeException("Categoria não encontrada"));
+
+            produto.setCategoria(categoria);
+        }
+
+        if (dto.ativo() != null) {
+            produto.setAtivo(dto.ativo());
+        }
+
+        return ProdutoMapper.toResponseDTO(produtoRepository.save(produto));
     }
 
 
@@ -81,25 +95,6 @@ public class ProdutoService {
         }
 
         produtoRepository.deleteById(id);
-    }
-
-
-    private void validar(ProdutoRequestDTO dto) {
-        if (dto.nome() == null || dto.nome().isBlank()) {
-            throw new RuntimeException("Nome do produto é obrigatório");
-        }
-    }
-
-
-    private ProdutoResponseDTO toResponseDTO(Produto produto) {
-        return new ProdutoResponseDTO(
-                produto.getId(),
-                produto.getCategoria() != null ? produto.getCategoria().getId() : null,
-                produto.getNome(),
-                produto.getDescricao(),
-                produto.isAtivo(),
-                produto.getDataCadastro()
-        );
     }
 
 }

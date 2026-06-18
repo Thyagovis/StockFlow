@@ -5,12 +5,14 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.SQLDelete;
 
 import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
 @Entity
+@SQLDelete(sql = "UPDATE produto SET ativo = false WHERE id = ?")
 public class Produto {
 
     @Id
@@ -36,7 +38,8 @@ public class Produto {
     @CreationTimestamp
     private LocalDateTime dataCadastro;
 
-    public Produto(String nome, String descricao, Categoria categoria) {
+    public Produto(String codigo, String nome, String descricao, Categoria categoria) {
+        this.codigo = codigo;
         this.categoria = categoria;
         this.nome = nome;
         this.descricao = descricao;
