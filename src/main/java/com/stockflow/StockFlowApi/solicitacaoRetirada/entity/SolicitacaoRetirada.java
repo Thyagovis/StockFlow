@@ -33,7 +33,7 @@ public class SolicitacaoRetirada {
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    private List<SolicitacaoItemRetirada> itemSolicitacaoRetirada;
+    private List<ItemSolicitacaoRetirada> itemSolicitacaoRetirada;
 
     @CreationTimestamp
     private LocalDateTime data;

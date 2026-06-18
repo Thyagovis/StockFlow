@@ -1,7 +1,6 @@
 package com.stockflow.StockFlowApi.solicitacaoCompra.entity;
 
 import com.stockflow.StockFlowApi.shared.enums.StatusSolicitacao;
-import com.stockflow.StockFlowApi.solicitacaoRetirada.entity.SolicitacaoItemRetirada;
 import com.stockflow.StockFlowApi.usuario.entity.Usuario;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

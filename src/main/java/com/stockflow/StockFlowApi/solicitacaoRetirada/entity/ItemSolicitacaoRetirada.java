@@ -1,7 +1,6 @@
 package com.stockflow.StockFlowApi.solicitacaoRetirada.entity;
 
 import com.stockflow.StockFlowApi.produto.entity.Produto;
-import com.stockflow.StockFlowApi.solicitacaoCompra.entity.SolicitacaoCompra;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,7 +12,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class SolicitacaoItemRetirada {
+public class ItemSolicitacaoRetirada {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
