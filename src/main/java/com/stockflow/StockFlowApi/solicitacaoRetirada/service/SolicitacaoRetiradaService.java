@@ -45,7 +45,7 @@ public class SolicitacaoRetiradaService {
     private SolicitacaoItemRetiradaResponseDTO definirItemDTO(SolicitacaoItemRetirada solicitacaoItemRetirada){
         return new SolicitacaoItemRetiradaResponseDTO(
                 solicitacaoItemRetirada.getId(),
-                solicitacaoItemRetirada.getProduto().getName(),
+                solicitacaoItemRetirada.getProduto().getNome(),
                 solicitacaoItemRetirada.getQuantidade()
         );
     }
