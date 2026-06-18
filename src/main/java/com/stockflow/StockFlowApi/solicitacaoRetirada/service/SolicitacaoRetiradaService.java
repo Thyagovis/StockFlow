@@ -26,6 +26,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static com.stockflow.StockFlowApi.solicitacaoRetirada.mapper.ItemSolicitacaoRetiradaMapper.toItemDTO;
 import static com.stockflow.StockFlowApi.solicitacaoRetirada.mapper.SolicitacaoRetiradaMapper.toDetalhadaRetiradaDTO;
 import static com.stockflow.StockFlowApi.solicitacaoRetirada.mapper.SolicitacaoRetiradaMapper.toSimplesRetiradaDTO;
 
@@ -39,16 +40,6 @@ public class SolicitacaoRetiradaService {
     private final ItemSolicitacaoRetiradaRepository itemSolicitacaoRetiradaRepository;
     private final UsuarioRepository usuarioRepository;
     private final ProdutoRepository produtoRepository;
-
-
-
-    private ItemSolicitacaoRetiradaResponseDTO definirItemDTO(ItemSolicitacaoRetirada itemSolicitacaoRetirada){
-        return new ItemSolicitacaoRetiradaResponseDTO(
-                itemSolicitacaoRetirada.getId(),
-                itemSolicitacaoRetirada.getProduto().getNome(),
-                itemSolicitacaoRetirada.getQuantidade()
-        );
-    }
 
 
 
@@ -151,7 +142,7 @@ public class SolicitacaoRetiradaService {
 
         itemSolicitacaoRetiradaRepository.save(itemSolicitacaoRetirada);
 
-        return definirItemDTO(itemSolicitacaoRetirada);
+        return toItemDTO(itemSolicitacaoRetirada);
     }
 
 
