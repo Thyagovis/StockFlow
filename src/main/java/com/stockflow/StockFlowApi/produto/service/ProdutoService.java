@@ -45,9 +45,9 @@ public class ProdutoService {
                 .orElseThrow(() -> new NotFoundException("Categoria não encontrada"));
 
         var produto = new Produto(
-                dto.codigo(),
-                dto.nome(),
-                dto.descricao(),
+                dto.codigo().trim(),
+                dto.nome().trim().toLowerCase(),
+                dto.descricao().trim().toLowerCase(),
                 categoria
         );
 
@@ -62,15 +62,15 @@ public class ProdutoService {
                 .orElseThrow(() -> new NotFoundException("Produto não encontrado"));
 
         if (dto.codigo() != null) {
-            produto.setCodigo(dto.codigo());
+            produto.setCodigo(dto.codigo().trim());
         }
 
         if (dto.nome() != null) {
-            produto.setNome(dto.nome());
+            produto.setNome(dto.nome().trim().toLowerCase());
         }
 
         if (dto.descricao() != null) {
-            produto.setDescricao(dto.descricao());
+            produto.setDescricao(dto.descricao().trim().toLowerCase());
         }
 
         if (dto.categoriaId() != null) {
