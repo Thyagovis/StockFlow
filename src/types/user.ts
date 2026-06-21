@@ -23,6 +23,7 @@ export interface UpdateUserPayload {
   nome?: string
   email?: string
   login?: string
+  senha?: string
   cargo?: Cargo
   ativo?: boolean
 }

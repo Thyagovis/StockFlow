@@ -5,10 +5,7 @@ import {
   ArrowUpFromLine,
   SlidersHorizontal,
   Boxes,
-  Truck,
-  BarChart3,
   Users,
-  Settings,
   Tags,
   ClipboardList,
   type LucideIcon,
@@ -40,6 +37,7 @@ export type NavEntry = NavItem | NavGroup
 export const NAV_ITEMS: NavEntry[] = [
   { label: "Dashboard", to: "/dashboard", icon: LayoutDashboard },
   { label: "Produtos", to: "/produtos", icon: Package },
+  { label: "Categorias", to: "/categorias", icon: Tags },
   { label: "Estoque", to: "/estoque", icon: Boxes },
   {
     type: "group",
@@ -52,40 +50,13 @@ export const NAV_ITEMS: NavEntry[] = [
     ],
   },
   {
-    label: "Fornecedores",
-    to: "/fornecedores",
-    icon: Truck,
-    placeholder: true,
-    roles: ["ADMINISTRADOR", "GERENTE", "SUPERVISOR"],
-  },
-  {
-    label: "Relatórios",
-    to: "/relatorios",
-    icon: BarChart3,
-    placeholder: true,
-    roles: ["ADMINISTRADOR", "GERENTE"],
-  },
-  {
     label: "Usuários",
     to: "/usuarios",
     icon: Users,
     roles: ["ADMINISTRADOR", "GERENTE"],
   },
-  {
-    label: "Categorias",
-    to: "/categorias",
-    icon: Tags,
-  },
-  {
-    label: "Configurações",
-    to: "/configuracoes",
-    icon: Settings,
-    placeholder: true,
-    roles: ["ADMINISTRADOR"],
-  },
 ]
 
-/** Returns a flat list of all NavItem leaves (from both top-level items and groups). */
 export function getFlatNavItems(cargo: Cargo | undefined): NavItem[] {
   const result: NavItem[] = []
   for (const entry of NAV_ITEMS) {

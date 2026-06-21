@@ -24,7 +24,6 @@ export function DashboardLayout() {
     localStorage.setItem(COLLAPSE_KEY, String(collapsed))
   }, [collapsed])
 
-  // Close drawer on route change
   useEffect(() => {
     setMobileOpen(false)
   }, [location.pathname])
@@ -40,7 +39,7 @@ export function DashboardLayout() {
         <aside
           className={cn(
             "sticky top-0 flex h-svh shrink-0 flex-col border-r border-border bg-card transition-[width] duration-300",
-            collapsed ? "w-[76px]" : "w-64",
+            collapsed ? "w-19" : "w-64",
           )}
         >
           <div className={cn("flex h-16 items-center border-b border-border px-4", collapsed && "justify-center px-0")}>
@@ -55,7 +54,6 @@ export function DashboardLayout() {
         </aside>
       )}
 
-      {/* Mobile drawer */}
       <AnimatePresence>
         {!isDesktop && mobileOpen && (
           <>
@@ -93,7 +91,6 @@ export function DashboardLayout() {
         )}
       </AnimatePresence>
 
-      {/* Main content */}
       <div className="flex min-w-0 flex-1 flex-col">
         <header className="sticky top-0 z-30 flex h-16 items-center gap-3 border-b border-border bg-background/80 px-4 backdrop-blur-sm lg:px-6">
           {isDesktop ? (

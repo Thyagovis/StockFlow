@@ -2,7 +2,11 @@ import { useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Loader as Loader2 } from "lucide-react"
-import { userFormSchema, type UserFormValues } from "../user.schema"
+import {
+  createUserSchema,
+  updateUserSchema,
+  type UserFormValues,
+} from "../user.schema"
 import { useCreateUser, useUpdateUser } from "../use-users"
 import type { User } from "@/types/user"
 import { useAuth } from "@/context/auth-context"
@@ -48,7 +52,7 @@ export function UserFormDialog({ open, onOpenChange, user }: UserFormDialogProps
     watch,
     formState: { errors },
   } = useForm<UserFormValues>({
-    resolver: zodResolver(userFormSchema),
+    resolver: zodResolver(isEdit ? updateUserSchema : createUserSchema),
     defaultValues: {
       nome: "",
       email: "",
@@ -83,6 +87,7 @@ export function UserFormDialog({ open, onOpenChange, user }: UserFormDialogProps
         login: values.login,
         cargo: values.cargo,
         ativo: values.ativo,
+        ...(values.senha && { senha: values.senha }),
       }
       const isSelfEdit = authUser?.id === user.id
       updateMutation.mutate(
@@ -97,7 +102,6 @@ export function UserFormDialog({ open, onOpenChange, user }: UserFormDialogProps
         },
       )
     } else {
-      if (!values.senha) return
       createMutation.mutate(
         {
           nome: values.nome,
@@ -151,7 +155,7 @@ export function UserFormDialog({ open, onOpenChange, user }: UserFormDialogProps
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="grid gap-2">
               <Label htmlFor="cargo">Cargo</Label>
-              <Select value={cargo} onValueChange={(v) => setValue("cargo", v as UserFormValues["cargo"])}>
+              <Select value={cargo} onValueChange={(v) => setValue("cargo", v as UserFormValues["cargo"], {shouldValidate: true})}>
                 <SelectTrigger id="cargo">
                   <SelectValue placeholder="Selecione" />
                 </SelectTrigger>
@@ -168,7 +172,7 @@ export function UserFormDialog({ open, onOpenChange, user }: UserFormDialogProps
 
             {isEdit && (
               <div className="flex items-center gap-3 pt-6">
-                <Switch id="ativo" checked={ativo} onCheckedChange={(v) => setValue("ativo", v)} />
+                <Switch id="ativo" checked={ativo} onCheckedChange={(v) => setValue("ativo", v, {shouldValidate: true})} />
                 <Label htmlFor="ativo" className="cursor-pointer">
                   {ativo ? "Ativo" : "Inativo"}
                 </Label>
@@ -176,20 +180,33 @@ export function UserFormDialog({ open, onOpenChange, user }: UserFormDialogProps
             )}
           </div>
 
-          {!isEdit && (
-            <div className="grid gap-2">
-              <Label htmlFor="senha">Senha</Label>
-              <Input
-                id="senha"
-                type="password"
-                placeholder="••••••••"
-                {...register("senha")}
-                aria-invalid={!!errors.senha}
-              />
-              {errors.senha && <p className="text-xs text-destructive">{errors.senha.message}</p>}
-              {!errors.senha && <p className="text-xs text-muted-foreground">Mínimo de 6 caracteres.</p>}
-            </div>
-          )}
+
+          <div className="grid gap-2">
+            <Label htmlFor="senha">
+              {isEdit ? "Nova senha" : "Senha"}
+            </Label>
+
+            <Input
+              id="senha"
+              type="password"
+              placeholder={
+                isEdit
+                    ? "Deixe em branco para manter a senha atual"
+                    : "••••••••"
+              }
+              {...register("senha")}
+              aria-invalid={!!errors.senha}
+            />
+            {errors.senha && <p className="text-xs text-destructive">{errors.senha.message}</p>}
+            {!errors.senha &&
+              <p className="text-xs text-muted-foreground">
+                {isEdit
+                  ? "Deixe em branco para manter a senha atual."
+                  : "Mínimo de 6 caracteres."}
+              </p>
+            }
+          </div>
+
 
           <DialogFooter className="mt-2">
             <Button type="button" variant="outline" onClick={() => onOpenChange(false)} disabled={isPending}>
