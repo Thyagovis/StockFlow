@@ -1,0 +1,25 @@
+spring:
+  config:
+    import: "optional:file:.env[.properties]"
+
+  application:
+    name: StockFlowApi
+
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+
+security:
+  jwt:
+    secret: ${JWT_SECRET:SjTkc/HJWVXf9CwRabHuZIIL49VuVAcNfXhUSez+01tB8bvh7O7io1hmrvBb3LJ4Z3uxvxrlTLaOc+T0NJPQ2A==}
+    expiration: ${JWT_EXPIRATION:3600}
+    issuer: ${JWT_ISSUER:StockFlowApi}
+
+  cors:
+    allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:3000,http://localhost:5173}
