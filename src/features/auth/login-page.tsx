@@ -16,8 +16,7 @@ import { loginSchema, type LoginFormValues } from "./login.schema"
 
 const HIGHLIGHTS = [
   "Controle de entradas e saídas em tempo real",
-  "Gestão de produtos, fornecedores e usuários",
-  "Relatórios e indicadores inteligentes",
+  "Gestão de estoque, produtos e usuários",
 ]
 
 export function LoginPage() {
@@ -53,7 +52,6 @@ export function LoginPage() {
 
   return (
     <div className="grid min-h-screen lg:grid-cols-2">
-      {/* Brand panel */}
       <aside className="relative hidden overflow-hidden bg-sidebar lg:flex lg:flex-col lg:justify-between lg:p-12">
         <div
           className="pointer-events-none absolute inset-0 opacity-60"
@@ -69,7 +67,7 @@ export function LoginPage() {
               Stock<span className="text-primary">Flow</span>
             </span>
             <span className="mt-1 text-[11px] uppercase tracking-[0.2em] text-muted-foreground">
-              Controle inteligente de estoque
+              Controle de estoque
             </span>
           </div>
         </div>
@@ -84,7 +82,7 @@ export function LoginPage() {
             Gerencie todo o seu estoque em um só lugar.
           </h2>
           <p className="mt-3 leading-relaxed text-muted-foreground">
-            Plataforma profissional para acompanhar movimentações, produtos e equipes com
+            Plataforma para acompanhar movimentações, produtos e equipes com
             precisão e agilidade.
           </p>
           <ul className="mt-8 flex flex-col gap-3">
@@ -104,7 +102,6 @@ export function LoginPage() {
         </p>
       </aside>
 
-      {/* Form panel */}
       <main className="flex items-center justify-center px-6 py-12">
         <motion.div
           initial={{ opacity: 0, y: 12 }}
